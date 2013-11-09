@@ -1,22 +1,5 @@
 /*
- *  NSA Security-Enhanced Linux (Limit File) security module
- *
- *  This file contains the Limit File hook function implementations.
- *
- *  Authors:  Stephen Smalley, <sds@epoch.ncsc.mil>
- *	      Chris Vance, <cvance@nai.com>
- *	      Wayne Salamon, <wsalamon@nai.com>
- *	      James Morris <jmorris@redhat.com>
- *
- *  Copyright (C) 2001,2002 Networks Associates Technology, Inc.
- *  Copyright (C) 2003-2008 Red Hat, Inc., James Morris <jmorris@redhat.com>
- *					   Eric Paris <eparis@redhat.com>
- *  Copyright (C) 2004-2005 Trusted Computer Solutions, Inc.
- *			    <dgoeddel@trustedcs.com>
- *  Copyright (C) 2006, 2007, 2009 Hewlett-Packard Development Company, L.P.
- *	Paul Moore <paul@paul-moore.com>
- *  Copyright (C) 2007 Hitachi Software Engineering Co., Ltd.
- *		       Yuichi Nakamura <ynakam@hitachisoft.jp>
+ *  Copyright (C) 2013-2015 Luca Clementi <luca.clementi@gmail.com>
  *
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License version 2,
