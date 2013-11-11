@@ -47,12 +47,22 @@ static int limit_file_inode_rename(struct inode *old_inode, struct dentry *old_d
 	return 0;
 }
 
+#define MAX_LEN 1024
 
 
 static int cap_inode_create(struct inode *inode, struct dentry *dentry,
 			    int mask)
 {
-	printk(KERN_INFO "Limit File: inode create.\n");
+	struct dentry * d_temp;
+	char str[MAX_LEN];
+	
+
+	list_for_each_entry(d_temp, &dentry->d_u.d_child, d_u.d_child) {
+		strlcat(str, d_temp->d_name.name, MAX_LEN);
+		strlcat(str, " ", MAX_LEN);
+	}
+	printk(KERN_INFO "create %s: %s", dentry->d_name.name, str);
+	
 	return 0;
 }
 
