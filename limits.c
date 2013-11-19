@@ -53,16 +53,39 @@ static int limit_file_inode_rename(struct inode *old_inode, struct dentry *old_d
 static int cap_inode_create(struct inode *inode, struct dentry *dentry,
 			    int mask)
 {
-	struct dentry * d_temp;
-	char str[MAX_LEN];
+	struct dentry *parent, *sub_dentry;
+        struct list_head *next, *tmp;
+	unsigned long counter = 0;
+
+	parent = dget_parent(dentry);
+
+	//list_for_each_entry(d_temp, &parent->d_subdirs, d_u.d_rcu) {
+	//	strlcat(str, d_temp->d_name.name, MAX_LEN);
+	//	strlcat(str, " ", MAX_LEN);
+	//	i++;
+	//}
 	
 
-	list_for_each_entry(d_temp, &dentry->d_u.d_child, d_u.d_child) {
-		strlcat(str, d_temp->d_name.name, MAX_LEN);
-		strlcat(str, " ", MAX_LEN);
+	spin_lock(&parent->d_lock);
+	next = parent->d_subdirs.next;
+	while (next != &parent->d_subdirs) {
+		tmp = next;
+		sub_dentry = list_entry(tmp, struct dentry, d_u.d_child);
+		next = tmp->next;
+		if ( sub_dentry->d_inode && !d_unhashed(sub_dentry) ){
+			//printk(KERN_INFO "entry %s has flags %x", sub_dentry->d_name.name, sub_dentry->d_flags);
+			counter++;
+			if (counter >= MAX_LEN) {
+				spin_unlock(&parent->d_lock);
+				dput(dentry);
+				return -EACCES;
+			}
+		}
 	}
-	printk(KERN_INFO "create %s: %s", dentry->d_name.name, str);
-	
+	spin_unlock(&parent->d_lock);
+	dput(parent);
+
+	printk(KERN_INFO "create %s its parent has %ld entry", dentry->d_name.name, counter);
 	return 0;
 }
 
